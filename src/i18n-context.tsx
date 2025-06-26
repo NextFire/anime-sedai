@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import { translations, type Language } from './i18n'
+import { DEFAULT_LANG, translations, type Language } from './i18n'
 
 interface I18nContextType {
   language: Language
@@ -16,9 +16,9 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('language')
-      return saved ? JSON.parse(saved) : 'zh'
+      return saved ? JSON.parse(saved) : DEFAULT_LANG
     } catch {
-      return 'zh'
+      return DEFAULT_LANG
     }
   })
 

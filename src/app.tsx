@@ -5,7 +5,7 @@ import { toast } from "sonner"
 import { usePersistState } from "./hooks"
 import { useI18n } from "./i18n-context"
 import { LanguageToggle } from "./LanguageToggle"
-import { getPromptTemplate } from "./i18n"
+import { DEFAULT_LANG, getPromptTemplate } from "./i18n"
 
 export const App = () => {
   const { t, language } = useI18n()
@@ -85,11 +85,11 @@ ${Object.keys(animeData)
 
     const sliceItems = items.slice(0, 12)
     const watched = sliceItems
-      .filter((item) => selectedAnime.includes(getAnimeTitle(item, "zh")))
+      .filter((item) => selectedAnime.includes(getAnimeTitle(item, DEFAULT_LANG)))
       .map((item) => getAnimeTitle(item, language))
       .join(", ")
     const unWatched = sliceItems
-      .filter((item) => !selectedAnime.includes(getAnimeTitle(item, "zh")))
+      .filter((item) => !selectedAnime.includes(getAnimeTitle(item, DEFAULT_LANG)))
       .map((item) => getAnimeTitle(item, language))
       .join(", ")
 
@@ -107,7 +107,7 @@ ${Object.keys(animeData)
   }, [selectedAnime, promptType, language, t])
 
   const totalAnime = Object.values(animeData).flatMap((year) => {
-    return year.map((item) => getAnimeTitle(item, "zh")).slice(0, 12)
+    return year.map((item) => getAnimeTitle(item, DEFAULT_LANG)).slice(0, 12)
   }).length
 
   return (
@@ -160,7 +160,7 @@ ${Object.keys(animeData)
                     </div>
                     <div className="flex shrink-0">
                       {items.slice(0, 12).map((item) => {
-                        const animeKey = getAnimeTitle(item, "zh")
+                        const animeKey = getAnimeTitle(item, DEFAULT_LANG)
                         const displayTitle = getAnimeTitle(item, language)
                         const isSelected = selectedAnime.includes(animeKey)
                         return (
@@ -241,7 +241,7 @@ ${Object.keys(animeData)
               setSelectedAnime(
                 Object.values(animeData).flatMap((year) => {
                   return year
-                    .map((item) => getAnimeTitle(item, "zh"))
+                    .map((item) => getAnimeTitle(item, DEFAULT_LANG))
                     .slice(0, 12)
                 })
               )

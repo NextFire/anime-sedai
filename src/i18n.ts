@@ -1,5 +1,7 @@
 export type Language = "zh" | "en" | "ja"
 
+export const DEFAULT_LANG: Language = "en"
+
 export const translations = {
   zh: {
     title: "动画世代",
