@@ -65,6 +65,10 @@ export const App = ({ animeData }: { animeData: Data }) => {
     URL.revokeObjectURL(url)
   }
 
+  const maxTitlesPerYear = useMemo(() => {
+    return Math.max(...Object.values(animeData).map((items) => items.length))
+  }, [animeData])
+
   const [promptType, setPromptType] = useState<"normal" | "zako">("zako")
   const prompt = useMemo(() => {
     const templates = getPromptTemplate(language)
@@ -83,7 +87,7 @@ ${Object.keys(animeData)
 
     if (items.length === 0) return ""
 
-    const sliceItems = items.slice(0, 12)
+    const sliceItems = items.slice(0, maxTitlesPerYear)
     const watched = sliceItems
       .filter((item) => selectedAnime.includes(getAnimeTitle(item, DEFAULT_LANG)))
       .map((item) => getAnimeTitle(item, language))
@@ -104,10 +108,12 @@ ${Object.keys(animeData)
   .filter(Boolean)
   .join("\n")}
     `.trim()
-  }, [selectedAnime, promptType, language, t])
+  }, [selectedAnime, promptType, language, t, maxTitlesPerYear])
 
   const totalAnime = Object.values(animeData).flatMap((year) => {
-    return year.map((item) => getAnimeTitle(item, DEFAULT_LANG)).slice(0, 12)
+    return year
+      .map((item) => getAnimeTitle(item, DEFAULT_LANG))
+      .slice(0, maxTitlesPerYear)
   }).length
 
   return (
@@ -159,7 +165,7 @@ ${Object.keys(animeData)
                       </span>
                     </div>
                     <div className="flex shrink-0">
-                      {items.slice(0, 12).map((item) => {
+                      {items.slice(0, maxTitlesPerYear).map((item) => {
                         const animeKey = getAnimeTitle(item, DEFAULT_LANG)
                         const displayTitle = getAnimeTitle(item, language)
                         const isSelected = selectedAnime.includes(animeKey)
@@ -208,7 +214,9 @@ ${Object.keys(animeData)
                         )
                       })}
                       {Array.from(
-                        { length: Math.max(0, 12 - items.length) },
+                        {
+                          length: Math.max(0, maxTitlesPerYear - items.length),
+                        },
                         (_, index) => (
                           <div
                             key={`empty-${index}`}
@@ -242,7 +250,7 @@ ${Object.keys(animeData)
                 Object.values(animeData).flatMap((year) => {
                   return year
                     .map((item) => getAnimeTitle(item, DEFAULT_LANG))
-                    .slice(0, 12)
+                    .slice(0, maxTitlesPerYear)
                 })
               )
             }}
