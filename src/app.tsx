@@ -375,12 +375,12 @@ ${Object.keys(animeData)
           </a>
           {t("madeBy")}
           <a
-            href="https://github.com/egoist/anime-sedai"
+            href="https://github.com/NextFire/anime-sedai"
             target="_blank"
             className="underline"
           >
             {t("viewCode")}
-          </a>
+          </a> (forked by NextFire)
         </div>
 
         {language === "en" && (
