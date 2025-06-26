@@ -2,17 +2,13 @@ import { useMemo, useRef, useState, useEffect } from "react"
 import { getAnimeTitle, type Data } from "../anime-data"
 import { domToBlob } from "modern-screenshot"
 import { toast } from "sonner"
-import { usePersistState } from "./hooks"
 import { useI18n } from "./i18n-context"
 import { LanguageToggle } from "./LanguageToggle"
 import { DEFAULT_LANG, getPromptTemplate } from "./i18n"
 
 export const App = ({ animeData }: { animeData: Data }) => {
   const { t, language } = useI18n()
-  const [selectedAnime, setSelectedAnime] = usePersistState<string[]>(
-    "selectedAnime",
-    []
-  )
+  const [selectedAnime, setSelectedAnime] = useState<string[]>([])
 
   const wrapper = useRef<HTMLDivElement>(null)
 
